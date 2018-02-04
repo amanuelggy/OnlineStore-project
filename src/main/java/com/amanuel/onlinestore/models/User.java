@@ -1,4 +1,4 @@
-package com.amanuel.loginRegistration.models;
+package com.amanuel.onlinestore.models;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -44,6 +45,17 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"), 
         inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Product> products;
+    
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<WishList> wishLists;
+    
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Cart> carts;
+    
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Comment> comments;
     
     public User() {
     }
@@ -102,8 +114,33 @@ public class User {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
-    
-    @PrePersist
+    public List<WishList> getWishLists() {
+		return wishLists;
+	}
+	public void setWishLists(List<WishList> wishLists) {
+		this.wishLists = wishLists;
+	}
+	public List<Product> getProducts() {
+		return products;
+	}
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+	
+	public List<Cart> getCarts() {
+		return carts;
+	}
+	public void setCarts(List<Cart> carts) {
+		this.carts = carts;
+	}
+	
+	public List<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
+	}
+	@PrePersist
     protected void onCreate(){
         this.createdAt = new Date();
     }
@@ -111,5 +148,14 @@ public class User {
     protected void onUpdate(){
         this.updatedAt = new Date();
     }
+    
+    
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", firstname=" + firstname + ", lastname=" + lastname
+				+ "]";
+	}
+    
+    
 	
 }

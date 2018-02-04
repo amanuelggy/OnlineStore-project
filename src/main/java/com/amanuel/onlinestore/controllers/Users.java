@@ -1,6 +1,7 @@
-package com.amanuel.loginRegistration.controllers;
+package com.amanuel.onlinestore.controllers;
 
 import java.security.Principal;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -14,9 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.amanuel.loginRegistration.models.User;
-import com.amanuel.loginRegistration.services.UserService;
-import com.amanuel.loginRegistration.validator.UserValidator;
+import com.amanuel.onlinestore.models.Product;
+import com.amanuel.onlinestore.models.User;
+import com.amanuel.onlinestore.services.UserService;
+import com.amanuel.onlinestore.validator.UserValidator;
 
 @Controller
 public class Users {
@@ -63,7 +65,29 @@ public class Users {
     public String home(Principal principal, Model model) {
         String email = principal.getName();
         User user = userService.findByEmail(email);
-        model.addAttribute("currentUser", user);
+		List<Product> products = userService.allProducts();
+		model.addAttribute("products", products);
+		model.addAttribute("currentUser", user);
         return "homePage";
     }
+    @RequestMapping("/user/setting")
+    public String setting(Principal principal, Model model) {
+    		String email = principal.getName();
+        User user = userService.findByEmail(email);
+        model.addAttribute("currentUser", user);
+        return "settingPage";
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

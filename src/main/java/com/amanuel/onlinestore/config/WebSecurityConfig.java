@@ -1,4 +1,4 @@
-package com.amanuel.loginRegistration.config;
+package com.amanuel.onlinestore.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

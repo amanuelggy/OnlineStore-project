@@ -1,12 +1,12 @@
-package com.amanuel.loginRegistration;
+package com.amanuel.onlinestore;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LoginRegistrationApplication {
+public class OnlineSotreApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LoginRegistrationApplication.class, args);
+		SpringApplication.run(OnlineSotreApplication.class, args);
 	}
 }

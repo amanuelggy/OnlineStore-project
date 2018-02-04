@@ -1,11 +1,11 @@
-package com.amanuel.loginRegistration.repositories;
+package com.amanuel.onlinestore.repositories;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.amanuel.loginRegistration.models.Role;
+import com.amanuel.onlinestore.models.Role;
 
 @Repository
 public interface RoleRepository extends CrudRepository<Role, Long>{

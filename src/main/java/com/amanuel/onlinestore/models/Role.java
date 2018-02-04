@@ -1,13 +1,14 @@
-package com.amanuel.loginRegistration.models;
+package com.amanuel.onlinestore.models;
 
 import java.util.List;
 
 import javax.persistence.Entity;
-import com.amanuel.loginRegistration.models.User;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
+import com.amanuel.onlinestore.models.User;
 
 
 @Entity
