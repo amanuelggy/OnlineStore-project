@@ -10,6 +10,10 @@
 <title>Cart Page</title>
 </head>
 <body>
+	<form id="logoutForm" method="POST" action="/logout">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="submit" value="Logout!" />
+    </form>
 	<h1>Hello, this is Cart page!</h1>
 	
 		<p><a href = "/">Home</a> &nbsp; &nbsp; <a href = "/api/wishlist">WishList</a></p>

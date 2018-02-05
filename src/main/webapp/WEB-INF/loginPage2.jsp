@@ -15,6 +15,7 @@
     <c:if test="${errorMessage != null}">
         <c:out value="${errorMessage}"></c:out>
     </c:if>
+   <p> <a href = "/main">Home</a> &nbsp; &nbsp; <a href = "/registration">Register</a></p>
     <form method="POST" action="/login">
         <p>
             <label for="username">Email</label>

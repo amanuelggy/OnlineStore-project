@@ -42,7 +42,7 @@ public class Comments {
 		   Comment newcomment = new Comment();
 		   newcomment.setComment(comment.getComment());
 		   newcomment.setUser(user);
-		   newcomment.setProduct(product);
+		   newcomment.setProduct(product); 
 		   userService.saveComment(newcomment);
 		   
 		   

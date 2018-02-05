@@ -9,6 +9,10 @@
 <title>Adding Product page</title>
 </head>
 <body>
+	<form id="logoutForm" method="POST" action="/logout">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="submit" value="Logout!" />
+    </form>
 	<p><a href = "/">Home</a> &nbsp; &nbsp; <a href = "/api/products/myproducts">All your products</a> &nbsp; &nbsp;
 	   <a href = "/api/wishlist"> My WishList</a>&nbsp; &nbsp; <a href = "/api/cart">Cart</a></p>
 	   

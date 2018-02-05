@@ -3,13 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.amanuel.loginRegistration</groupId>
-	<artifactId>loginRegistration</artifactId>
+	<artifactId>onlineStore</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
 
-	<name>loginRegistration</name>
-	<description>Login and Registration project using Spring Boot</description>
+	<description>onlineStore application</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -77,4 +74,7 @@
 	</build>
 
 
+	<packaging>war</packaging>
+	<groupId>com.amanuel.onlineStore</groupId>
+	<name>onlineStore</name>
 </project>

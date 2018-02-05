@@ -62,10 +62,15 @@ public class Users {
         return "loginPage2";
     }
     @RequestMapping(value = {"/", "/home"})
-    public String home(Principal principal, Model model) {
+    public String home(@RequestParam(value = "product", required = false) String product,@RequestParam(value = "allproducts",required = false) String allproducts,Principal principal, Model model) {
         String email = principal.getName();
         User user = userService.findByEmail(email);
 		List<Product> products = userService.allProducts();
+		allproducts = "";
+		if(product == null) {
+			product = "";
+		}
+		model.addAttribute("allproducts", allproducts);
 		model.addAttribute("products", products);
 		model.addAttribute("currentUser", user);
         return "homePage";
@@ -76,6 +81,20 @@ public class Users {
         User user = userService.findByEmail(email);
         model.addAttribute("currentUser", user);
         return "settingPage";
+    }
+    @RequestMapping("/main")
+    public String main(Model model,@RequestParam(value = "product", required = false) String product,@RequestParam(value = "allproducts",required = false) String allproducts, HttpSession session) {
+    	// @RequestParam(value = "product", required = false) String product, @RequestParam(value = "allproducts", required = false) String allproducts
+    		List<Product> products = userService.allProducts();
+    		allproducts = "";
+    		if(product == null) {
+    			product = "";
+    		}
+    		
+		model.addAttribute("products", products);
+		session.setAttribute("product", product);
+		model.addAttribute("allproducts", allproducts);
+		return "mainPage";
     }
     
     
