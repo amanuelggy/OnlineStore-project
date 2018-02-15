@@ -7,10 +7,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel = "stylesheet" type = "text/css" href = "css/style.css">
 <title>Registration Page</title>
 </head>
 <body>
-	<p><a href = "/login">Login</a> &nbsp; &nbsp; <a href = "/main">Home</a></p>
+	<p><a href = "/main">Home</a> &nbsp; &nbsp;<a href = "/login">Login</a> &nbsp; &nbsp; <a href = "/registration">Register</a></p>
     <h1>Register!</h1>
     
     <p><form:errors path="user.*"/></p>

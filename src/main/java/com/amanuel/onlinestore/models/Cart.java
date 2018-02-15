@@ -22,7 +22,7 @@ public class Cart {
 		@Id
 		@GeneratedValue
 		private Long id;
-		
+		private int cart=0;
 //		private String img;
 //		@Size(min=1, message = "name must be greater than 1 character")
 //		private String name;
@@ -130,9 +130,17 @@ public class Cart {
 //		public void setDetail(String detail) {
 //			this.detail = detail;
 //		}
-
+		
 		public Date getCreatedAt() {
 			return createdAt;
+		}
+
+		public int getCart() {
+			return cart;
+		}
+
+		public void setCart(int cart) {
+			this.cart = cart;
 		}
 
 		public void setCreatedAt(Date createdAt) {

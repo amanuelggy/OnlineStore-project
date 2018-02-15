@@ -8,10 +8,10 @@ import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletCon
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class OnlineSotreApplication {
+public class OnlineStoreApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(OnlineSotreApplication.class, args);
+		SpringApplication.run(OnlineStoreApplication.class, args);
 	}
 	   @Bean
 	    public EmbeddedServletContainerFactory servletContainer() {

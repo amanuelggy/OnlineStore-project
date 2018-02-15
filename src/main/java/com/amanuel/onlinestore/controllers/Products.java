@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.amanuel.onlinestore.models.Cart;
 import com.amanuel.onlinestore.models.Comment;
 import com.amanuel.onlinestore.models.Product;
 import com.amanuel.onlinestore.models.User;
@@ -32,7 +33,17 @@ public class Products {
 	  }
 	// Creating products form page
 	@RequestMapping("/page")
-	public String product(@Valid @ModelAttribute("product") Product product) {
+	public String product(@Valid @ModelAttribute("product") Product product, Model model) {
+		List<Product> products = userService.allProducts();
+		int cartsize = 0;
+		for(int i = 0; i < products.size(); i++) {
+			if(products.get(i).getCart() != null) {
+				if(products.get(i).getUser().getId() == products.get(i).getCart().getUser().getId()) {
+					cartsize++;
+				}
+			}
+		}
+		model.addAttribute("cartsize", cartsize);
 		return "productPage";
 	}
 	
@@ -45,10 +56,20 @@ public class Products {
 // 		if (result.hasErrors()) {
 //         return "redirect:/api/products/save";
 //     }
-		product.setUser(user);
-		userService.saveProduct(product);
 		
-		System.out.println("product: " + product);
+		Product pro = new Product();
+		pro.setImg(product.getImg());
+		pro.setName(product.getName());
+		pro.setPrice(product.getPrice());
+		pro.setShipfee(product.getShipfee());
+		pro.setShipStatus(product.getShipStatus());
+		pro.setDescription(product.getDescription());
+		pro.setDetail(product.getDetail());
+		
+		
+		pro.setUser(user);
+		userService.saveProduct(pro);
+
 		return "redirect:/api/products/myproducts";
 	}
 	@RequestMapping("/myproducts")
@@ -56,8 +77,19 @@ public class Products {
 		String email = principal.getName();
 		User user = userService.findByEmail(email);
 		List<Comment> comments = userService.allComment();
+		List<Product> product = userService.allProducts();
 		model.addAttribute("comments", comments);
 		model.addAttribute("products", user.getProducts());
+		
+		int cartsize = 0;
+		for(int i = 0; i < product.size(); i++) {
+			if(product.get(i).getCart() != null) {
+				if(product.get(i).getUser().getId() == product.get(i).getCart().getUser().getId()) {
+					cartsize++;
+				}
+			}
+		}
+		model.addAttribute("cartsize", cartsize);
 		return "userProductPage";
 	}
 	
@@ -66,13 +98,37 @@ public class Products {
 		Product product = userService.findProductById(id);
 		List<Comment> comments = userService.allComment();
 		System.out.println("List of comments:" + comments);
+		List<Product> products = userService.allProducts();
 		model.addAttribute("product", product);
 		model.addAttribute("comments", comments);
-		for(int i = 0; i < product.getComments().size(); i++) {
-			System.out.println("iphone comments: " + product.getComments().get(i));
+		
+		int cartsize = 0;
+		for(int i = 0; i < products.size(); i++) {
+			if(products.get(i).getCart() != null) {
+				if(products.get(i).getUser().getId() == products.get(i).getCart().getUser().getId()) {
+					cartsize++;
+				}
+			}
 		}
-		System.out.println("product page: " + product);
+		model.addAttribute("cartsize", cartsize);
 		return "singleProductPage";
+	}
+	@RequestMapping("/delete/{id}")
+	public String deleteProduct(@PathVariable("id") Long id, Principal principal, Model model) {
+		Product product = userService.findProductById(id);
+		List<Comment> comment = userService.allComment();
+//		for(int i = 0; i < comment.size(); i++) {
+//			if(comment.get(i).getUser().getId() == id) {
+//				userService.deleteComment(comment.get(i).getId());
+//			}
+//		}
+//		System.out.println("this is from products: " + product);
+//		product.setWishlist(null);
+//		product.setCart(null);
+//		product.setComments(null);
+//		product.setUser(null); 
+		userService.deleteProductById(id);
+		return "redirect:/api/products/myproducts";
 	}
 	
 	

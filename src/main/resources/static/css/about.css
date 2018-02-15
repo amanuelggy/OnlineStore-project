@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+.container{
+	width: 1280px;
+	height: 1000px;
+	padding-left: 20px;
+	margin-right: 638px;
+}
+.mains_top{
+	margin-left: 190px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.title_rows .current{
+	color: #262626;
+	text-decoration: underline;
+}
+.mains_nav{
+	padding-left: 60px;
+}
+.mains_cart_wish{
+	margin-top: -152px;
+	margin-left: 685px;
+}
+.mains_cart_button{
+	background-color: #F0BB55;
+}
+.mains_welcome{
+	margin-left: 67px;
+}

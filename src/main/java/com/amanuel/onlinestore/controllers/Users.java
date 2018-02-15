@@ -11,11 +11,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.amanuel.onlinestore.models.Comment;
 import com.amanuel.onlinestore.models.Product;
+import com.amanuel.onlinestore.models.Role;
 import com.amanuel.onlinestore.models.User;
 import com.amanuel.onlinestore.services.UserService;
 import com.amanuel.onlinestore.validator.UserValidator;
@@ -34,57 +37,117 @@ public class Users {
     }
     
     @RequestMapping("/registration")
-    public String registerForm(@Valid @ModelAttribute("user") User user) {
-        return "registrationPage2";
+    public String registerForm(@Valid @ModelAttribute("user") User user,BindingResult result) {
+        return "loginPage";
     }
     
     @PostMapping("/registration")
-    public String registration(@Valid @ModelAttribute("user") User user, BindingResult result, Model model, HttpSession session) {
-    	 // NEW
+    public String registration(@Valid @ModelAttribute("user") User user, BindingResult result, Model model) {
         userValidator.validate(user, result);
     		if (result.hasErrors()) {
-            return "registrationPage2";
+            return "loginPage";
         }
+    		if(userService.findAllUsers().size() == 0) {
+    			userService.saveUserWithAdminRole(user);
+    			return "redirect:/login";
+    		}
+    		else {
         userService.saveWithUserRole(user);
         return "redirect:/login";
+    		}
     }
     
     
     @RequestMapping("/login")
-    public String login(@RequestParam(value="error", required=false) String error, @RequestParam(value="logout", required=false) String logout, Model model) {
+    public String login(@Valid @ModelAttribute("user") User user, @RequestParam(value="error", required=false) String error, @RequestParam(value="logout", required=false) String logout, Model model, @RequestParam(value="loggedin", required=false) String loggedin) {
         if(error != null) {
-//        	System.out.println("hellooo" + user);
             model.addAttribute("errorMessage", "Invalid Credentials, Please try again.");
         }
         if(logout != null) {
             model.addAttribute("logoutMessage", "Logout Successfull!");
         }
-        return "loginPage2";
+        return "loginPage";
     }
     @RequestMapping(value = {"/", "/home"})
     public String home(@RequestParam(value = "product", required = false) String product,@RequestParam(value = "allproducts",required = false) String allproducts,Principal principal, Model model) {
         String email = principal.getName();
         User user = userService.findByEmail(email);
 		List<Product> products = userService.allProducts();
+		List<Comment> comment = userService.allComment();
 		allproducts = "";
 		if(product == null) {
 			product = "";
 		}
+
+		int cartsize = 0;
+		for(int i = 0; i < products.size(); i++) {
+			if(products.get(i).getCart() != null) {
+				System.out.println("helloooo this is home");
+				System.out.println("products.get(i).getUser().getId(): " + products.get(i).getUser().getId());
+				System.out.println("products.get(i).getCart().getUser().getId(): " + products.get(i).getCart().getUser().getId());
+				if(products.get(i).getUser().getId() == products.get(i).getCart().getUser().getId()) {
+					cartsize++;
+				}
+			}
+		}
+		model.addAttribute("cartsize", cartsize);
+		System.out.println("cart size: " + cartsize);
+//		int num = 0;
+//		for(int i = 0; i < comment.size(); i++) {
+//			if(comment.get(i).getProduct().getId() == products.get(i).getId()) {
+//				System.out.println("comment " + comment.get(i).getProduct().getId() + " and " + "comment" + products.get(i).getId());
+//			}
+//		}
+		
+//		int totalComment = 0;
+//		model.addAttribute("totalComment", totalComment);
+		model.addAttribute("comments",comment);
 		model.addAttribute("allproducts", allproducts);
+		model.addAttribute("product", product);
 		model.addAttribute("products", products);
 		model.addAttribute("currentUser", user);
+		List<Role> role = user.getRoles();
+		for (int i = 0; i < role.size(); i++) {
+	        if(role.get(i).getName().equals("ROLE_ADMIN")) {
+	        		
+	        		return "redirect:/admin";
+	        }
+//	        else {
+//	        	model.addAttribute("currentUser", user);
+//	        return "homePage";
+//	        	}
+	        
+        }
         return "homePage";
+    }
+    @RequestMapping("/admin")
+    public String show(Principal principal, Model model) {
+    		String username = principal.getName();
+    		
+    		List<User> allusers = userService.findAllUsers();
+    		model.addAttribute("currentUsers", allusers);
+    		model.addAttribute("currentUser", userService.findByEmail(username));
+    		return "adminPage";
     }
     @RequestMapping("/user/setting")
     public String setting(Principal principal, Model model) {
     		String email = principal.getName();
         User user = userService.findByEmail(email);
+        List<Product> products = userService.allProducts();
+        int cartsize = 0;
+        for(int i = 0; i < products.size(); i++) {
+			if(products.get(i).getCart() != null) {
+				if(products.get(i).getUser().getId() == products.get(i).getCart().getUser().getId()) {
+					cartsize++;
+				}
+			}
+		}
         model.addAttribute("currentUser", user);
+        model.addAttribute("cartsize", cartsize);
         return "settingPage";
     }
     @RequestMapping("/main")
     public String main(Model model,@RequestParam(value = "product", required = false) String product,@RequestParam(value = "allproducts",required = false) String allproducts, HttpSession session) {
-    	// @RequestParam(value = "product", required = false) String product, @RequestParam(value = "allproducts", required = false) String allproducts
     		List<Product> products = userService.allProducts();
     		allproducts = "";
     		if(product == null) {
@@ -96,6 +159,31 @@ public class Users {
 		model.addAttribute("allproducts", allproducts);
 		return "mainPage";
     }
+    @RequestMapping("/main/{id}")
+	public String singleProduct(@Valid @ModelAttribute("com") Comment comment,@PathVariable("id") Long id, Principal principal, Model model) {
+		Product product = userService.findProductById(id);
+		List<Comment> comments = userService.allComment();
+		System.out.println("List of comments:" + comments);
+		List<Product> products = userService.allProducts();
+		model.addAttribute("product", product);
+		model.addAttribute("comments", comments);
+		
+		int cartsize = 0;
+		for(int i = 0; i < products.size(); i++) {
+			if(products.get(i).getCart() != null) {
+				if(products.get(i).getUser().getId() == products.get(i).getCart().getUser().getId()) {
+					cartsize++;
+				}
+			}
+		}
+		model.addAttribute("cartsize", cartsize);
+		return "mains_singleProductPage";
+	}
+    @RequestMapping("/main/about")
+    public String about(Model model) {
+    		return "about";
+    }
+    
     
     
     

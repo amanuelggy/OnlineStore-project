@@ -1,0 +1,35 @@
+@charset "UTF-8";
+
+
+.container{	
+	width: 1280px;
+	height: 1000px;
+	padding-left: 20px;
+	margin-right: 638px;
+}
+.mains_top{
+	margin-left: 190px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.mains_nav{
+	padding-left: 60px;
+}
+.title_rows .current{
+	color: #262626;
+	text-decoration: underline;
+}
+.log_reg{
+	margin-left: 132px;
+	display: flex;
+}
+.login{
+	margin-left: -45px;
+	padding-right: 92px;
+}
+.regi{
+	margin-left: 80px;
+}
+.or{
+	margin-top: 114px;
+}

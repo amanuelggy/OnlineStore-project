@@ -7,22 +7,37 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel = "stylesheet" type = "text/css" href = "/css/style.css">
 <title>Setting Info (User Info)</title>
 </head>
 <body>
-	<form id="logoutForm" method="POST" action="/logout">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <input type="submit" value="Logout!" />
-    </form>
-	<p><a href = "/api/products/page">Sell your product</a> &nbsp; &nbsp; 
-	   <a href = "/api/products/myproducts">All your products</a> &nbsp; &nbsp; 
-	   <a href = "/api/wishlist"> My WishList</a>&nbsp; &nbsp; <a href = "/api/cart">Cart</a></p>
-    <fieldset>
-    	<p>First Name: <c:out value="${ currentUser.firstname }"></c:out></p>
-    	<p>Last Name: <c:out value="${ currentUser.lastname }"></c:out></p>
-    	<p>Email: <c:out value="${ currentUser.email }"></c:out></p>
-    	<p>Sign up date: <fmt:formatDate type = "date" value="${ currentUser.createdAt }" pattern = "MM/dd/yyyy" /></p>
-    	<p>Last Sign in: <fmt:formatDate type = "date" value="${ currentUser.createdAt }" pattern = "MM/dd/yyyy" /></p>
-    </fieldset><br>
+	<div class = "container">
+				<div class = "header">
+						<table class = "title_table">
+						   <tr class = "title_rows">
+						   		<td class = "title_rows"><a href = "/">Home</a></td>
+						   		<td class = "title_rows"><a href = "/api/products/page">Create your product</a></td>
+						   		<td class = "title_rows"><a href = "/api/products/myproducts">My products</a></td>
+						   		<td class = "title_rows"><a href = "/api/wishlist">WishList</a></td>
+						   		<td class = "title_rows"><a href = "/api/cart"><span class="glyphicon glyphicon-shopping-cart"></span><label style = "color:white; margin-left: -10px; position:relative; top: -10px; width: 16px; height: 16px; border-radius: 50%; line-height:18px; text-align: center; background: red; font-size: 12px;"><c:out value = "${ cartsize }"></c:out></label></a></td>				   
+						  		<td class = "title_rows"><a class = "current" href = "/user/setting">Account</a></td>			  
+						    		<td class = "title_rows">
+						    			<form id="logoutForm" method="POST" action="/logout">
+								        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+								        <input class = "logout_button" type="submit" value="Logout!" />
+					    	    			</form>
+					    	    		</td>
+					    	    </tr>
+					   </table>
+				</div>
+		    <div class = "setting">
+			    	<p>First Name: <c:out value="${ currentUser.firstname }"></c:out></p>
+			    	<p>Last Name: <c:out value="${ currentUser.lastname }"></c:out></p>
+			    	<p>Email: <c:out value="${ currentUser.email }"></c:out></p>
+			    	<p>Sign up date: <fmt:formatDate type = "date" value="${ currentUser.createdAt }" pattern = "MM/dd/yyyy" /></p>
+			    	<p>Last Sign in: <fmt:formatDate type = "date" value="${ currentUser.createdAt }" pattern = "MM/dd/yyyy" /></p>
+		    </div><br>
+    </div>
 </body>
 </html>

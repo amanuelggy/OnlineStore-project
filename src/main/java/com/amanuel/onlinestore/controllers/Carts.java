@@ -33,21 +33,52 @@ public class Carts {
 	public String cart(Principal principal, Model model) {
 		String email = principal.getName();
 		User user = userService.findByEmail(email);
+		Double sum = 0.0;
+		int cartsize = 0;
 		List<Product> product = userService.allProducts();
 		model.addAttribute("products", product);
+		for(int i = 0; i < product.size(); i++) {
+			
+			if(product.get(i).getCart() != null) {
+				if(product.get(i).getUser().getId() == product.get(i).getCart().getUser().getId()) {
+					sum += product.get(i).getPrice();
+					cartsize++;
+					
+					
+				}
+			}
+		}
+		model.addAttribute("sum", sum);
+		model.addAttribute("cartsize", cartsize);
+		System.out.println("sum is: " + sum);
+		System.out.println("cart size: " + cartsize);
 		return "cartPage";
 	}
-	//THE PAGE SHOULDING REFRESH UPON ADDING A PRODUCT TO CART AND SHOULD STAY IN THE SAME PAGE.
+	//THE PAGE SHOULDN'T REFRESH UPON ADDING A PRODUCT TO CART AND SHOULD STAY IN THE SAME PAGE.
 	@PostMapping("/{id}")
 	public String saveCart(@Valid @ModelAttribute("cart") Cart cart,@PathVariable("id") Long id, BindingResult result, Principal principal, Model model) {
 		String email = principal.getName();
 		User user = userService.findByEmail(email);
 		Product product = userService.findProductById(id);
-		cart.setUser(user);
-		product.setCart(cart);
-		userService.saveCart(cart);
 		
+		Cart newcart = new Cart();
+		newcart.setCart(newcart.getCart()+1);
+		newcart.setUser(user);
+		userService.saveCart(newcart);
+		
+		product.setCart(newcart);
+		userService.saveProduct(product);
 		return "redirect:/";
+	}
+	@RequestMapping("/delete/{id}")
+	public String removeFromCart(@PathVariable("id") Long id, Principal principal, Model model) {
+		Product product = userService.findProductById(id);
+		Cart cart = userService.findCartById(product.getCart().getId());
+		product.setCart(null);
+		cart.setUser(null);
+		userService.saveCart(cart);
+		System.out.println("cart from delete:" + cart);
+		return "redirect:/api/cart";
 	}
 	
 }

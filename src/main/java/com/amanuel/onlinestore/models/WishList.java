@@ -173,10 +173,12 @@ public class WishList {
 		this.updatedAt = new Date();
 	}
 
-//	@Override
-//	public String toString() {
-//		return "WishList [id=" + id + ", user=" + user + ", products=" + products + "]";
-//	}
+	@Override
+	public String toString() {
+		return "WishList [id=" + id +  "]";
+	}
+
+	
 
 	
 	

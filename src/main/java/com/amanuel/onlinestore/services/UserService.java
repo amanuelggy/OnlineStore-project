@@ -55,13 +55,13 @@ public class UserService {
         userRepository.save(user);
     }    
     
-    // 3
+    // user
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
-//    public User findByUsername(String username) {
-//        return userRepository.findByUsername(username);
-//    }
+    public List<User> findAllUsers(){
+        return (List<User>) userRepository.findAll();
+    }
     public User findUserById(Long id) {
     		return userRepository.findOne(id);
     }
@@ -78,7 +78,12 @@ public class UserService {
     public Product findProductById(Long id) {
     		return proRepo.findOne(id);
     }
-    
+    public void deleteProduct(Product product) {
+    		proRepo.delete(product);
+    }
+    public void deleteProductById(Long id) {
+		proRepo.delete(id);
+    }
     // WishList
     public void saveWishList(WishList wishlist) {
     		wishRepo.save(wishlist);
@@ -86,6 +91,13 @@ public class UserService {
     public List<WishList> allWishLists(){
     		return (List<WishList>) wishRepo.findAll();
     }
+    public WishList findWishListById(Long id) {
+    		return wishRepo.findOne(id);
+    }
+//    public void deleteWishList(Long id) {
+//    		wishRepo.delete(id);
+//    }
+    
     
     // Cart
     public void saveCart(Cart cart) {
@@ -94,6 +106,11 @@ public class UserService {
     public List<Cart> allCart(){
     		return (List<Cart>) cartRepo.findAll();
     }
+    public Cart findCartById(Long id) {
+		return cartRepo.findOne(id);
+    }
+    
+    
     
     // Comments
     public void saveComment(Comment comment) {
@@ -101,6 +118,9 @@ public class UserService {
     }
     public List<Comment> allComment(){
     		return (List<Comment>) commentRepo.findAll();
+    }
+    public void deleteComment(Long id) {
+    		commentRepo.delete(id);
     }
     
     

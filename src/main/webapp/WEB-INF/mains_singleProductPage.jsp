@@ -15,23 +15,14 @@
 <body>
 	<c:set var = "now" value = "<%= new java.util.Date()%>" />
 	<div class = "container">
-			<div class = "header">
+			<div class = "mains_top" class = "top">
 				<table class = "title_table">
-				   <tr class = "title_rows">
-				   		<td class = "title_rows"><a href = "/">Home</a></td>
-				   		<td class = "title_rows"><a href = "/api/products/page">Create your product</a></td>
-				   		<td class = "title_rows"><a href = "/api/products/myproducts">My products</a></td>
-				   		<td class = "title_rows"><a href = "/api/wishlist">WishList</a></td>
-				   		<td class = "title_rows"><a href = "/api/cart"><span class="glyphicon glyphicon-shopping-cart"></span><label style = "color:white; margin-left: -10px; position:relative; top: -10px; width: 16px; height: 16px; border-radius: 50%; line-height:18px; text-align: center; background: red; font-size: 12px;"><c:out value = "${ cartsize }"></c:out></label></a></td>				   
-				  		<td class = "title_rows"><a href = "/user/setting">Account</a></td>			  
-				    		<td class = "title_rows">
-				    			<form id="logoutForm" method="POST" action="/logout">
-						        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-						        <input class = "logout_button" type="submit" value="Logout!" />
-			    	    			</form>
-			    	    		</td>
-			    	    </tr>
-			   </table>
+					   <tr class = "title_rows">
+					   		<td class ="mains_nav" class = "title_rows"><a href = "/main">Home</a></td>
+					   		<td class ="mains_nav" class = "title_rows"><a href = "/login">Login / Registration</a></td>
+					   		<td class ="mains_nav" class = "title_rows"><a href = "/about">About</a></td>
+					   </tr>
+				</table>
 			</div>
 				<div class = "content">
 					<div class = "product_main">
@@ -66,21 +57,21 @@
 										<input class = "cart_button" type = "submit" value = "Add to Cart"/>
 									</form:form>
 								 </div>
-							 	<div class = "wish">
+							 	<%-- <div class = "wish">
 									<form:form method = "POST" action="/api/wishlist/${ product.id }" modelAttribute = "wishlist">
 										<input class = "wish_botton" type = "submit" value = "Add to WishList"/>
 									</form:form>
-								</div>
+								</div> --%>
 								
 							</div>	
 					</div>
 					
-					<div class = "detail_div">
+					<div class = "mains_detail_div">
 						<label>Product information: </label><br>
 						<span class = "detail"><c:out value="${ product.detail }"></c:out></span>
 					</div>
 					
-					<div class = "comments">
+					<div class = "mains_comments">
 						<label class = "fedbacks">Customer reviews:</label>
 						<c:forEach items = "${ product.getComments() }" var = "comment">
 							
@@ -96,16 +87,14 @@
 							</div>
 							
 						</c:forEach>
-						<form:form action="/api/comments/save/${ product.id }" method = "POST" modelAttribute = "com">
+						<%-- <form:form action="/api/comments/save/${ product.id }" method = "POST" modelAttribute = "com">
 							<form:label path = "comment">Comment:</form:label><br>
 							<form:textarea path = "comment" rows = "4" cols = "50"></form:textarea><br>
 							<input class = "comment_botton" type = "submit" value = "submit">
-						</form:form>
+						</form:form> --%>
 					</div>
 			 </div>
-					<div>
 					
-					</div>
 			
 		
 	</div>

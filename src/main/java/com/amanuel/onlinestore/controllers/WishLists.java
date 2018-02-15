@@ -19,7 +19,7 @@ import com.amanuel.onlinestore.models.WishList;
 import com.amanuel.onlinestore.services.UserService;
 import com.amanuel.onlinestore.validator.UserValidator;
 @Controller
-@RequestMapping("/api/wishlist")
+@RequestMapping("api/wishlist")
 public class WishLists {
 	
 	private UserValidator userValidator;
@@ -36,6 +36,16 @@ public class WishLists {
 		User user = userService.findByEmail(email);
 		List<Product> product = userService.allProducts();
 		model.addAttribute("products", product);
+		
+		int cartsize = 0;
+		for(int i = 0; i < product.size(); i++) {
+			if(product.get(i).getCart() != null) {
+				if(product.get(i).getUser().getId() == product.get(i).getCart().getUser().getId()) {
+					cartsize++;
+				}
+			}
+		}
+		model.addAttribute("cartsize", cartsize);
 		return "wishListPage";
 	}
 // Creating Wish List
@@ -45,13 +55,38 @@ public class WishLists {
 		String email = principal.getName();
 		User user = userService.findByEmail(email);
 		Product product = userService.findProductById(id);
-		product.setWishlist(wishlist);
-		System.out.println("product1: " + product);
-		wishlist.setUser(user);
 		
-		System.out.println("product: " + product);
-		System.out.println("wishlist: " + wishlist);
-		userService.saveWishList(wishlist);
+		WishList newwish = new WishList();
+		newwish.setUser(user);
+		userService.saveWishList(newwish);
+		
+		product.setWishlist(newwish);
+		userService.saveWishList(newwish);
+		return "redirect:/api/cart";
+	}
+	@PostMapping("/save/{id}")
+	public String saveWishListFromHome(@Valid @ModelAttribute("wishlist") WishList wishlist, @PathVariable("id") Long id,BindingResult result, Principal principal) {
+		System.out.println("helloloollll: ");
+		String email = principal.getName();
+		User user = userService.findByEmail(email);
+		Product product = userService.findProductById(id);
+		
+		WishList newwish = new WishList();
+		newwish.setUser(user);
+		userService.saveWishList(newwish);
+		
+		product.setWishlist(newwish);
+		userService.saveWishList(newwish);
 		return "redirect:/";
+	}
+	
+	@RequestMapping("/delete/{id}")
+	public String deleteWishList(@PathVariable("id") Long id, Principal principal, Model model) {
+		Product product = userService.findProductById(id);
+		WishList wishlist = userService.findWishListById(product.getWishlist().getId());
+		product.setWishlist(null);
+		wishlist.setUser(null);
+		userService.saveWishList(wishlist);
+		return "redirect:/api/wishlist";
 	}
 }
