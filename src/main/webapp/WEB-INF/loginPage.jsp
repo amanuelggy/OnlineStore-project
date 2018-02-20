@@ -49,7 +49,7 @@
 				    </form>
 			    </div>
 			    <div>
-			    		<label class = "or">or</label>
+			    		<label class = "or">(or)</label>
 			    </div>
 			    <div class = "regi">
 			    		<h1>Register!</h1>

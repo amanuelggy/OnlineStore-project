@@ -41,7 +41,9 @@
 					        <input class = "search_button" type="submit" value="Search"/>
 					   		<button class = "search_button" name = "allproduct" value = "allproduct">All products</button>
 				   		</div>
-				   		<br><br>
+		</form>
+				   		<!-- <br><br> -->
+			<div class ="mains_main">
 				   		
 				<c:forEach items = "${ products }" var = "pro">
 					<c:if test="${ pro.name.toLowerCase().indexOf(product.toLowerCase()) > -1 || pro.name.toLowerCase().indexOf(product.toLowerCase()) == null}">
@@ -94,7 +96,7 @@
 						
 					</c:if>
 				</c:forEach>
-		</form>
+		<%-- </form> --%>
 	</div>
 </body>
 </html>

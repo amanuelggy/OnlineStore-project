@@ -24,59 +24,73 @@
 		</div>
 		<label class = "mains_welcome">Welcome to worldstore.com online store, where you can buy products from anywhere from the world and sell your product to the world.</label>
 		<p class = "mains_welcome">Please <a href = "/login">login/register to buy or sell your products.</a></p>
-		<form method = "POST" action = "/main">
-						<label for="product"></label>
+		<form action = "/main" method = "POST">
+			<label for="product"></label>
 				            <input class = "search_input" type="text" id="product" name="product" placeholder= " search" /> &nbsp;
 					        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 					        <input class = "search_button" type="submit" value="Search"/>
 					   		<button class = "search_button" name = "allproduct" value = "allproduct">All products</button>
-					   		<br><br>
-					<c:forEach items = "${ products }" var = "pro">
-						<c:if test="${ pro.name.toLowerCase().indexOf(product.toLowerCase()) > -1 || pro.name.toLowerCase().indexOf(product.toLowerCase()) == null}">
-							<div class = "product_div">
-								<div class = "img_div">
-										<div class = "img">
-											<a href = "/main/${ pro.id }"><img class = "img" alt="product_image" src="<c:url value = "${ pro.img }" />" /></a>
-										</div>
-										<div class = "desc_div">
-											<div class = "title_div">
-												<div class = "title">
-													<a href = "/main/${ pro.id }"><c:out value="${ pro.name }"></c:out></a>
-												</div>
-												by <span><c:out value="${ pro.getUser().getFirstname() }"></c:out></span>
-											</div>
-											<div class = "desc_info">
-												$<span><c:out value= "${ pro.price }"></c:out></span>
-												<c:if test="${ pro.shipfee != Null }">
-													$<span> + Shipping<c:out value="${ pro.shipfee }"></c:out></span>
-												</c:if>
-												<c:if test= "${ pro.shipStatus == true }">
-													<span> + FREE Shipping</span>
-												</c:if>
-											</div>
-											<div class = "desc">
-												<label>Product Description:</label> <br><span class = "desc_text"><c:out value="${ pro.description }"></c:out></span>
-											</div>
-											<%-- <p>Product detail: <span><c:out value="${ pro.detail }"></c:out></span></p> --%>
-										 </div>
-								 </div>
-								 <div class = "mains_cart_wish" class = "cart_wish">
-								 	<%-- <div class = "wish_button">
-										<form:form method = "POST" action="/api/wishlist/${ pro.id }" modelAttribute = "wishlist">
-											<input type = "submit" value = "Add to WishList"/>
-										</form:form>
-									</div> --%>
-									<div class = "cart_form">
-										<form:form method = "POST" action="/api/cart/${ pro.id }" modelAttribute = "cart">
-											<input class = "mains_cart_button" class = "cart_button" type = "submit" value = "Add to Cart"/>
-										</form:form>
-									 </div>
-								</div>
+		</form>
+		<div class = "mains_main">
+			<c:forEach items = "${ products }" var = "pro">
+				<c:if test="${ pro.name.toLowerCase().indexOf(product.toLowerCase()) > -1 || pro.name.toLowerCase().indexOf(product.toLowerCase()) == null}">
+					<%-- <form method = "POST" action = "/main"> --%>
+									<%-- <label for="product"></label>
+							            <input class = "search_input" type="text" id="product" name="product" placeholder= " search" /> &nbsp;
+								        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+								        <input class = "search_button" type="submit" value="Search"/>
+								   		<button class = "search_button" name = "allproduct" value = "allproduct">All products</button> --%>
+								   		<br><br>
+								<%-- <c:forEach items = "${ products }" var = "pro">
+									<c:if test="${ pro.name.toLowerCase().indexOf(product.toLowerCase()) > -1 || pro.name.toLowerCase().indexOf(product.toLowerCase()) == null}"> --%>
+										<div class = "product_div">
+											<div class = "img_div">
+													<div class = "img">
+														<a href = "/main/${ pro.id }"><img class = "img" alt="product_image" src="<c:url value = "${ pro.img }" />" /></a>
+													</div>
+													<div class = "desc_div">
+														<div class = "title_div">
+															<div class = "title">
+																<a href = "/main/${ pro.id }"><c:out value="${ pro.name }"></c:out></a>
+															</div>
+															by <span><c:out value="${ pro.getUser().getFirstname() }"></c:out></span>
+														</div>
+														<div class = "desc_info">
+															$<span><c:out value= "${ pro.price }"></c:out></span>
+															<c:if test="${ pro.shipfee != Null }">
+																$<span> + Shipping<c:out value="${ pro.shipfee }"></c:out></span>
+															</c:if>
+															<c:if test= "${ pro.shipStatus == true }">
+																<span> + FREE Shipping</span>
+															</c:if>
+														</div>
+														<div class = "desc">
+															<label>Product Description:</label> <br><span class = "desc_text"><c:out value="${ pro.description }"></c:out></span>
+														</div>
+														<%-- <p>Product detail: <span><c:out value="${ pro.detail }"></c:out></span></p> --%>
+													 </div>
+											 </div>
+											 
+												
+										</div><br>
+									<%-- </form> --%>
+										<div class = "mains_cart_wish" class = "cart_wish">
+											 	<%-- <div class = "wish_button">
+													<form:form method = "POST" action="/api/wishlist/${ pro.id }" modelAttribute = "wishlist">
+														<input type = "submit" value = "Add to WishList"/>
+													</form:form>
+												</div> --%>
+												<div class = "cart_form">
+													<form:form method = "POST" action="/api/cart/${ pro.id }" modelAttribute = "cart">
+														<input class = "mains_cart_button" class = "cart_button" type = "submit" value = "Add to Cart"/>
+													</form:form>
+												 </div>
+											</div><br><br>
 									
-							</div><br>
 						</c:if>
 					</c:forEach>
-			</form>
+				</div>
+			<%-- </form> --%>
 	</div>
 </body>
 </html>
