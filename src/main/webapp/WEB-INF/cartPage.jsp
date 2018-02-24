@@ -5,6 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -40,33 +41,7 @@
 						<label class = "cart_num">There are (<c:out value = "${ cartsize }"></c:out>) products in your cart</label>
 							<c:forEach items = "${ products }" var = "pro">
 								
-								<c:if test="${ pro.getUser().getId() == pro.getCart().getUser().getId() }">
-									<%-- <div>
-										<div>
-											<a href = "/api/products/${ pro.id }"><img alt="product_image" src="<c:url value = "${ pro.img }" />" /></a>
-										</div>
-										<div>
-											<h2><a href = "/api/products/${ pro.id }"><c:out value="${ pro.name }"></c:out></a></h2>
-											price: $<label><c:out value= "${ pro.price }"></c:out></label>
-											<c:if test="${ pro.shipfee != Null }">
-												+ Shipping $<label><c:out value="${ pro.shipfee }"></c:out></label>
-											</c:if>
-											<c:if test= "${ pro.shipStatus == true }">
-												+ <label>Free</label> Shipping
-											</c:if>
-											<p>About the product: <label><c:out value="${ pro.description }"></c:out></label></p>
-											<p>Product detail: <label><c:out value="${ pro.detail }"></c:out></label></p>
-											
-										
-										</div>
-										<form:form method = "POST" action="/api/wishlist/${ pro.id }" modelAttribute = "wishlist">
-											<input type = "submit" value = "Add to WishList"/>
-										</form:form><br>
-										<form:form method = "POST" action = "/api/cart/delete/${pro.id}">
-											<input type = "submit" value = "Remove from Cart">
-										</form:form>	
-											
-									</div> --%>
+								<c:if test="${ pro.getCart() != null  && pro.getCart().getUser().getId() == userId}">
 									<div class = "product_div">
 									<div class = "img_div">
 										<div class = "img">
@@ -76,6 +51,16 @@
 											<div class = "title_div">
 												<div class = "title">
 													<a href = "/api/products/${ pro.id }"><c:out value="${ pro.name }"></c:out></a>
+												</div>
+												<div class = "comm_div">
+													<a href = "/api/products/${ pro.id }">
+														<c:if test="${ fn:length(pro.getComments()) > 1 }">
+															<span>(<c:out value="${ fn:length(pro.getComments()) }"></c:out> customer reviews)</span>
+														</c:if>
+														<c:if test="${ fn:length(pro.getComments()) <= 1 }">
+															<span>(<c:out value="${ fn:length(pro.getComments()) }"></c:out> customer review)</span>
+														</c:if>
+													</a>
 												</div>
 												by <span><c:out value="${ pro.getUser().getFirstname() }"></c:out></span>
 											</div>
@@ -119,7 +104,7 @@
 					<div class = "tottal_price">
 						<p class = "cart_size"><c:out value = "${ cartsize }" ></c:out> items in your cart:</p>
 						<c:forEach items = "${ products}" var = "pro">
-							<c:if test="${ pro.getUser().getId() == pro.getCart().getUser().getId() }">
+							<c:if test="${ pro.getCart() != null }">
 							<div>
 								<label>$<c:out value= "${ pro.price }"></c:out></label>
 							</div>

@@ -140,6 +140,31 @@ public class User {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
+	
+//	public int cartsize( ) {
+//		for(int i = 0; i < products.size(); i++) {
+//			int cartsize = 0;
+//			if(products.get(i).getCart() != null && products.get(i).getCart().getUser().getId() == user.getId()) {
+//				cartsize++;
+//				sum += products.get(i).getPrice();	
+//			}
+//		}
+//		return false;
+//	}
+	public int getCartSize() {
+		int cart_size = 0;
+		for(int i = 0; i < carts.size(); i++) {
+			if(id == carts.get(i).getUser().getId()) {
+				System.out.println("user id from user: " + id);
+				System.out.println("carts.get(i).getUser().getId() from user: " + id);
+				cart_size++;
+				
+			}
+			
+		}
+		return cart_size;
+	}
+	
 	@PrePersist
     protected void onCreate(){
         this.createdAt = new Date();

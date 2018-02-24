@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
@@ -62,12 +63,22 @@
 													</c:if>
 												</c:forEach> --%>
 											</div>
-											by <span><c:out value="${ pro.getUser().getFirstname() }"></c:out></span>
+											<div class = "comm_div">
+												<a href = "/api/products/${ pro.id }">
+													<c:if test="${ fn:length(pro.getComments()) > 1 }">
+														<span>(<c:out value="${ fn:length(pro.getComments()) }"></c:out> customer reviews)</span>
+													</c:if>
+													<c:if test="${ fn:length(pro.getComments()) <= 1 }">
+														<span>(<c:out value="${ fn:length(pro.getComments()) }"></c:out> customer review)</span>
+													</c:if>
+												</a>
+											</div>
+											 <span class = "name">by <c:out value="${ pro.getUser().getFirstname() }"></c:out></span>
 										</div>
 										<div class = "desc_info">
 											$<span><c:out value= "${ pro.price }"></c:out></span>
-											<c:if test="${ pro.shipfee != Null }">
-												$<span> + Shipping<c:out value="${ pro.shipfee }"></c:out></span>
+											<c:if test="${ pro.shipfee != null }">
+												<span> + Shipping $<c:out value="${ pro.shipfee }"></c:out></span>
 											</c:if>
 											<c:if test= "${ pro.shipStatus == true }">
 												<span> + FREE Shipping</span>
@@ -79,16 +90,27 @@
 								 </div>
 							 </div>
 							 <div class = "cart_wish">
+								
 							 	<div class = "wish_button">
 									<form:form method = "POST" action="/api/wishlist/save/${ pro.id }" modelAttribute = "wishlist">
 										<input class = "home_wish" type = "submit" value = "Add to WishList"/>
 									</form:form>
 								</div>
-								<div class = "cart_form">
-									<form:form method = "POST" action="/api/cart/${ pro.id }" modelAttribute = "cart">
-										<input class = "cart_button" type = "submit" value = "Add to Cart"/>
-									</form:form>
-								 </div>
+								
+								 <c:if test="${ pro.getCart() != null  && pro.getCart().getUser().getId() == userId }">
+									 <div class = "cart_form">
+										<form:form method = "POST" action="/api/cart" modelAttribute = "cart">
+											<input class = "disabled_button" type = "submit" value = "Go to Cart" />
+										</form:form>
+									 </div>
+								 </c:if>
+								 <c:if test="${ pro.getCart().getUser().getId() != userId}">
+									 <div class = "cart_form">
+										<form:form method = "POST" action="/api/cart/${ pro.id }" modelAttribute = "cart">
+											<input class = "cart_button" type = "submit" value = "Add to Cart" />
+										</form:form>
+									 </div>
+								 </c:if>
 							</div>
 								
 						</div><br>
@@ -97,6 +119,7 @@
 					</c:if>
 				</c:forEach>
 		<%-- </form> --%>
+		</div>
 	</div>
 </body>
 </html>

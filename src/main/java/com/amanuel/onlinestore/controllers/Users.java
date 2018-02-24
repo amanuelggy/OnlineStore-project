@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.amanuel.onlinestore.models.Cart;
 import com.amanuel.onlinestore.models.Comment;
 import com.amanuel.onlinestore.models.Product;
 import com.amanuel.onlinestore.models.Role;
@@ -72,26 +73,28 @@ public class Users {
     public String home(@RequestParam(value = "product", required = false) String product,@RequestParam(value = "allproducts",required = false) String allproducts,Principal principal, Model model) {
         String email = principal.getName();
         User user = userService.findByEmail(email);
+        List<Cart> cart = userService.allCart();
 		List<Product> products = userService.allProducts();
 		List<Comment> comment = userService.allComment();
 		allproducts = "";
 		if(product == null) {
 			product = "";
 		}
-
-		int cartsize = 0;
+		Double sum = 0.0;
 		for(int i = 0; i < products.size(); i++) {
-			if(products.get(i).getCart() != null) {
-				System.out.println("helloooo this is home");
-				System.out.println("products.get(i).getUser().getId(): " + products.get(i).getUser().getId());
-				System.out.println("products.get(i).getCart().getUser().getId(): " + products.get(i).getCart().getUser().getId());
-				if(products.get(i).getUser().getId() == products.get(i).getCart().getUser().getId()) {
-					cartsize++;
-				}
+			
+			if(products.get(i).getCart() != null && products.get(i).getCart().getUser().getId() == user.getId()) {
+				sum += products.get(i).getPrice();
+//				model.addAttribute("cartsize", products.get(i).getC);
 			}
+			
 		}
-		model.addAttribute("cartsize", cartsize);
-		System.out.println("cart size: " + cartsize);
+		
+		System.out.println("this is the cartsize(): " + user.getCartSize());
+//		model.addAttribute("cartsize", cartsize);
+		model.addAttribute("cartsize", user.getCartSize());
+		//model.addAttribute("cartsize", cartsize);
+		//System.out.println("cart size: " + cartsize);
 //		int num = 0;
 //		for(int i = 0; i < comment.size(); i++) {
 //			if(comment.get(i).getProduct().getId() == products.get(i).getId()) {
@@ -106,6 +109,7 @@ public class Users {
 		model.addAttribute("product", product);
 		model.addAttribute("products", products);
 		model.addAttribute("currentUser", user);
+		model.addAttribute("userId", user.getId());
 		List<Role> role = user.getRoles();
 		for (int i = 0; i < role.size(); i++) {
 	        if(role.get(i).getName().equals("ROLE_ADMIN")) {
@@ -136,14 +140,12 @@ public class Users {
         List<Product> products = userService.allProducts();
         int cartsize = 0;
         for(int i = 0; i < products.size(); i++) {
-			if(products.get(i).getCart() != null) {
-				if(products.get(i).getUser().getId() == products.get(i).getCart().getUser().getId()) {
-					cartsize++;
-				}
+			if(products.get(i).getCart() != null && products.get(i).getCart().getUser().getId() == user.getId()) {
+				cartsize++;
 			}
 		}
         model.addAttribute("currentUser", user);
-        model.addAttribute("cartsize", cartsize);
+        model.addAttribute("cartsize", user.getCartSize());
         return "settingPage";
     }
     @RequestMapping("/main")
@@ -161,22 +163,16 @@ public class Users {
     }
     @RequestMapping("/main/{id}")
 	public String singleProduct(@Valid @ModelAttribute("com") Comment comment,@PathVariable("id") Long id, Principal principal, Model model) {
-		Product product = userService.findProductById(id);
+    		String email = principal.getName();
+    		Product product = userService.findProductById(id);
 		List<Comment> comments = userService.allComment();
 		System.out.println("List of comments:" + comments);
 		List<Product> products = userService.allProducts();
+		User user = userService.findByEmail(email);
 		model.addAttribute("product", product);
 		model.addAttribute("comments", comments);
 		
-		int cartsize = 0;
-		for(int i = 0; i < products.size(); i++) {
-			if(products.get(i).getCart() != null) {
-				if(products.get(i).getUser().getId() == products.get(i).getCart().getUser().getId()) {
-					cartsize++;
-				}
-			}
-		}
-		model.addAttribute("cartsize", cartsize);
+		model.addAttribute("cartsize", user.getCartSize());
 		return "mains_singleProductPage";
 	}
     @RequestMapping("/main/about")

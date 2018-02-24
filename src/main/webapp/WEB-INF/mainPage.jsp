@@ -2,6 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -53,12 +54,22 @@
 															<div class = "title">
 																<a href = "/main/${ pro.id }"><c:out value="${ pro.name }"></c:out></a>
 															</div>
+															<div class = "comm_div">
+																<a href = "/main/${ pro.id }">
+																	<c:if test="${ fn:length(pro.getComments()) > 1 }">
+																		<span>(<c:out value="${ fn:length(pro.getComments()) }"></c:out> customer reviews)</span>
+																	</c:if>
+																	<c:if test="${ fn:length(pro.getComments()) <= 1 }">
+																		<span>(<c:out value="${ fn:length(pro.getComments()) }"></c:out> customer review)</span>
+																	</c:if>
+																</a>
+															</div>
 															by <span><c:out value="${ pro.getUser().getFirstname() }"></c:out></span>
 														</div>
 														<div class = "desc_info">
 															$<span><c:out value= "${ pro.price }"></c:out></span>
 															<c:if test="${ pro.shipfee != Null }">
-																$<span> + Shipping<c:out value="${ pro.shipfee }"></c:out></span>
+																<span> + Shipping $<c:out value="${ pro.shipfee }"></c:out></span>
 															</c:if>
 															<c:if test= "${ pro.shipStatus == true }">
 																<span> + FREE Shipping</span>

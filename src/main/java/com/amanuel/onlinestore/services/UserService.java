@@ -94,9 +94,9 @@ public class UserService {
     public WishList findWishListById(Long id) {
     		return wishRepo.findOne(id);
     }
-//    public void deleteWishList(Long id) {
-//    		wishRepo.delete(id);
-//    }
+    public void deleteWishList(WishList wish) {
+    		wishRepo.delete(wish);
+    }
     
     
     // Cart
@@ -110,7 +110,9 @@ public class UserService {
 		return cartRepo.findOne(id);
     }
     
-    
+    public void deleteCart(Cart cart) {
+    		cartRepo.delete(cart);
+    }
     
     // Comments
     public void saveComment(Comment comment) {

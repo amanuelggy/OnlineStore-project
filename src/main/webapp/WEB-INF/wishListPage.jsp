@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -36,7 +37,7 @@
 	
 		<c:forEach items = "${ products }" var = "pro">
 			
-			<c:if test="${ pro.getUser().getId() == pro.getWishlist().getUser().getId() }">
+			<c:if test="${ pro.getWishlist() != null && pro.getWishlist().getUser().getId() == userId }">
 				<div class = "pro_div" class = "product_div">
 					<div class = "img_div">
 						<div class = "img">
@@ -47,7 +48,17 @@
 								<div class = "title">
 									<a href = "/api/products/${ pro.id }"><c:out value="${ pro.name }"></c:out></a>
 								</div>
-								by <span><c:out value="${ pro.getUser().getFirstname() }"></c:out></span>
+								<div class = "comm_div">
+									<a href = "/api/products/${ pro.id }">
+										<c:if test="${ fn:length(pro.getComments()) > 1 }">
+											<span>(<c:out value="${ fn:length(pro.getComments()) }"></c:out> customer reviews)</span>
+										</c:if>
+										<c:if test="${ fn:length(pro.getComments()) <= 1 }">
+											<span>(<c:out value="${ fn:length(pro.getComments()) }"></c:out> customer review)</span>
+										</c:if>
+									</a>
+								</div>
+								 <span class = "name">by <c:out value="${ pro.getUser().getFirstname() }"></c:out></span>
 							</div>
 							<div class = "desc_info">
 								$<span><c:out value= "${ pro.price }"></c:out></span>
@@ -70,11 +81,20 @@
 								<input class = "rm_wish" type = "submit" value = "Remove from Wishlist">
 							</form:form>
 						</div>
-						<div class = "cart_form">
-							<form:form method = "POST" action="/api/cart/${ pro.id }" modelAttribute = "cart">
-								<input class = "cart_button" type = "submit" value = "Add to Cart"/>
-							</form:form>
-						</div>
+						<c:if test="${ pro.getCart() != null  && pro.getCart().getUser().getId() == userId  }">
+							<div class = "cart_form">
+								<form:form method = "POST" action="/api/cart" modelAttribute = "cart">
+									<input class = "disabled_button" type = "submit" value = "Go to Cart"/>
+								</form:form>
+							</div>
+						</c:if>
+						 <c:if test="${ pro.getCart().getUser().getId() != userId}">
+							 <div class = "cart_form">
+								<form:form method = "POST" action="/api/cart/${ pro.id }" modelAttribute = "cart">
+									<input class = "cart_button" type = "submit" value = "Add to Cart" />
+								</form:form>
+							 </div>
+						 </c:if>
 					</div>
 				</div>
 			</c:if><br>

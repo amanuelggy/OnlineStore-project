@@ -33,17 +33,17 @@ public class Products {
 	  }
 	// Creating products form page
 	@RequestMapping("/page")
-	public String product(@Valid @ModelAttribute("product") Product product, Model model) {
+	public String product(@Valid @ModelAttribute("product") Product product, Model model, Principal principal) {
+		String email = principal.getName();
+		User user = userService.findByEmail(email);
 		List<Product> products = userService.allProducts();
 		int cartsize = 0;
 		for(int i = 0; i < products.size(); i++) {
-			if(products.get(i).getCart() != null) {
-				if(products.get(i).getUser().getId() == products.get(i).getCart().getUser().getId()) {
-					cartsize++;
-				}
+			if(products.get(i).getCart() != null && products.get(i).getCart().getUser().getId() == user.getId()) {
+				cartsize++;
 			}
 		}
-		model.addAttribute("cartsize", cartsize);
+		model.addAttribute("cartsize", user.getCartSize());
 		return "productPage";
 	}
 	
@@ -83,10 +83,8 @@ public class Products {
 		
 		int cartsize = 0;
 		for(int i = 0; i < product.size(); i++) {
-			if(product.get(i).getCart() != null) {
-				if(product.get(i).getUser().getId() == product.get(i).getCart().getUser().getId()) {
-					cartsize++;
-				}
+			if(product.get(i).getCart() != null && product.get(i).getCart().getUser().getId() == user.getId()) {
+				cartsize++;
 			}
 		}
 		model.addAttribute("cartsize", cartsize);
@@ -105,9 +103,7 @@ public class Products {
 		int cartsize = 0;
 		for(int i = 0; i < products.size(); i++) {
 			if(products.get(i).getCart() != null) {
-				if(products.get(i).getUser().getId() == products.get(i).getCart().getUser().getId()) {
 					cartsize++;
-				}
 			}
 		}
 		model.addAttribute("cartsize", cartsize);

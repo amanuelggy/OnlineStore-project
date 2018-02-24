@@ -170,7 +170,20 @@ public class Cart {
 		public void setProducts(List<Product> products) {
 			this.products = products;
 		}
-
+		
+		public int cartsize() {
+			int cartsize = 0;
+			for(int i = 0; i < products.size(); i++) {
+				
+				if(products.get(i).getCart() != null && products.get(i).getCart().getUser().getId() == user.getId()) {
+					cartsize++;
+					
+				}
+			}
+			System.out.println("cartsize from CartModel: " + cartsize);
+			return cartsize;
+		}
+		
 		@PrePersist
 		protected void onCreate() {
 			this.createdAt = new Date();
@@ -179,6 +192,9 @@ public class Cart {
 		protected void onUpdate() {
 			this.updatedAt = new Date();
 		}
+		
+
+		
 		
 //		@Override
 //		public String toString() {

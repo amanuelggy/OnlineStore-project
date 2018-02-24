@@ -60,7 +60,7 @@
 	height: 218px;
 }
 .desc_div{
-	width: 500px;
+	width: 460px;
 	height: 150px;
 	margin-left: 320px;
 	margin-top: -208px;
@@ -75,9 +75,15 @@
 .title{
 	font-size: 24px;
 }
+.name{
+	font-size: 11px;
+}
+.comm_div{
+	font-size: 12px;
+}
 .cart_wish{
 	margin-top: -152px;
-	margin-left: 940px;
+	margin-left: 790px;
 }
 .cart_form{
 	margin-left: 140px;
@@ -85,6 +91,9 @@
 }
 .cart_button{
 	background-color: #F0BB55;
+}
+.disabled_button{
+	background-color: white;
 }
 .wish_button{
 	float: left;

@@ -190,6 +190,8 @@ public class Product {
 		public void setComments(List<Comment> comments) {
 			this.comments = comments;
 		}
+		
+	
 
 		@PrePersist
 		protected void onCreate() {

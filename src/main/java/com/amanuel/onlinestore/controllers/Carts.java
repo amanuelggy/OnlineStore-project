@@ -38,36 +38,36 @@ public class Carts {
 		List<Product> product = userService.allProducts();
 		model.addAttribute("products", product);
 		for(int i = 0; i < product.size(); i++) {
-			
-			if(product.get(i).getCart() != null) {
-				if(product.get(i).getUser().getId() == product.get(i).getCart().getUser().getId()) {
-					sum += product.get(i).getPrice();
-					cartsize++;
-					
-					
-				}
+			if(product.get(i).getCart() != null && product.get(i).getCart().getUser().getId() == user.getId()) {
+				cartsize++;
+				sum += product.get(i).getPrice();	
 			}
 		}
+		model.addAttribute("userId", user.getId());
 		model.addAttribute("sum", sum);
-		model.addAttribute("cartsize", cartsize);
+		model.addAttribute("cartsize", user.getCartSize());
+//		model.addAttribute("cartsize", user.getCarts().size());
 		System.out.println("sum is: " + sum);
-		System.out.println("cart size: " + cartsize);
+//		System.out.println("cart size: " + cartsize);
 		return "cartPage";
 	}
 	//THE PAGE SHOULDN'T REFRESH UPON ADDING A PRODUCT TO CART AND SHOULD STAY IN THE SAME PAGE.
 	@PostMapping("/{id}")
 	public String saveCart(@Valid @ModelAttribute("cart") Cart cart,@PathVariable("id") Long id, BindingResult result, Principal principal, Model model) {
+		System.out.println("this is saveCart from cart ");
+		
 		String email = principal.getName();
 		User user = userService.findByEmail(email);
 		Product product = userService.findProductById(id);
 		
 		Cart newcart = new Cart();
-		newcart.setCart(newcart.getCart()+1);
+//		newcart.setCart(newcart.getCart()+1);
 		newcart.setUser(user);
 		userService.saveCart(newcart);
 		
 		product.setCart(newcart);
 		userService.saveProduct(product);
+		System.out.println("this is saveCart from cart2------------------------ ");
 		return "redirect:/";
 	}
 	@RequestMapping("/delete/{id}")
@@ -77,6 +77,7 @@ public class Carts {
 		product.setCart(null);
 		cart.setUser(null);
 		userService.saveCart(cart);
+		userService.deleteCart(cart);
 		System.out.println("cart from delete:" + cart);
 		return "redirect:/api/cart";
 	}

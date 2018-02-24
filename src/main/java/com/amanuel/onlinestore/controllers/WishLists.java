@@ -37,30 +37,31 @@ public class WishLists {
 		List<Product> product = userService.allProducts();
 		model.addAttribute("products", product);
 		
-		int cartsize = 0;
-		for(int i = 0; i < product.size(); i++) {
-			if(product.get(i).getCart() != null) {
-				if(product.get(i).getUser().getId() == product.get(i).getCart().getUser().getId()) {
-					cartsize++;
-				}
-			}
-		}
-		model.addAttribute("cartsize", cartsize);
+//		int cartsize = 0;
+//		for(int i = 0; i < product.size(); i++) {
+//			if(product.get(i).getCart() != null && product.get(i).getCart().getUser().getId() == user.getId()) {
+//				cartsize++;
+//			}
+//		}
+		model.addAttribute("userId", user.getId());
+		model.addAttribute("cartsize", user.getCartSize());
 		return "wishListPage";
 	}
 // Creating Wish List
 	@PostMapping("/{id}")
 	public String saveWishList(@Valid @ModelAttribute("wishlist") WishList wishlist, @PathVariable("id") Long id,BindingResult result, Principal principal) {
 		System.out.println("helloloollll: ");
+		System.out.println("this is savingWishList from wishlist: ");
 		String email = principal.getName();
 		User user = userService.findByEmail(email);
 		Product product = userService.findProductById(id);
 		
 		WishList newwish = new WishList();
 		newwish.setUser(user);
-		userService.saveWishList(newwish);
+//		userService.saveWishList(newwish);
 		
 		product.setWishlist(newwish);
+		userService.saveProduct(product);
 		userService.saveWishList(newwish);
 		return "redirect:/api/cart";
 	}
@@ -84,9 +85,12 @@ public class WishLists {
 	public String deleteWishList(@PathVariable("id") Long id, Principal principal, Model model) {
 		Product product = userService.findProductById(id);
 		WishList wishlist = userService.findWishListById(product.getWishlist().getId());
+		System.out.println("helooo this is wishlist");
+		
 		product.setWishlist(null);
 		wishlist.setUser(null);
-		userService.saveWishList(wishlist);
+		userService.saveProduct(product);
+		userService.deleteWishList(wishlist);
 		return "redirect:/api/wishlist";
 	}
 }
