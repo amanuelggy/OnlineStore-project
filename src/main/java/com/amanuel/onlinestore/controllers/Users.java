@@ -163,16 +163,16 @@ public class Users {
     }
     @RequestMapping("/main/{id}")
 	public String singleProduct(@Valid @ModelAttribute("com") Comment comment,@PathVariable("id") Long id, Principal principal, Model model) {
-    		String email = principal.getName();
+//    		String email = principal.getName();
     		Product product = userService.findProductById(id);
 		List<Comment> comments = userService.allComment();
 		System.out.println("List of comments:" + comments);
 		List<Product> products = userService.allProducts();
-		User user = userService.findByEmail(email);
+//		User user = userService.findByEmail(email);
 		model.addAttribute("product", product);
 		model.addAttribute("comments", comments);
 		
-		model.addAttribute("cartsize", user.getCartSize());
+//		model.addAttribute("cartsize", user.getCartSize());
 		return "mains_singleProductPage";
 	}
     @RequestMapping("/main/about")
