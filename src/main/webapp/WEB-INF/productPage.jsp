@@ -39,9 +39,13 @@
 							<form:label path="name">Product name: </form:label>
 							<form:input path="name"/>
 						</p>
-						<p>
+						<%-- <p>
 							<form:label path="img">Image URL: </form:label>
 							<form:input path="img"/>
+						</p> --%>
+						<p>
+							<form:label path="img">Image URL: </form:label>
+							<form:textarea path="img" rows = "1" cols = "21"></form:textarea>
 						</p>
 						<p>
 							<form:label path="detail">Detail: </form:label>

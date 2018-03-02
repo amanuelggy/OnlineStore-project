@@ -37,12 +37,12 @@ public class Products {
 		String email = principal.getName();
 		User user = userService.findByEmail(email);
 		List<Product> products = userService.allProducts();
-		int cartsize = 0;
-		for(int i = 0; i < products.size(); i++) {
-			if(products.get(i).getCart() != null && products.get(i).getCart().getUser().getId() == user.getId()) {
-				cartsize++;
-			}
-		}
+//		int cartsize = 0;
+//		for(int i = 0; i < products.size(); i++) {
+//			if(products.get(i).getCart() != null && products.get(i).getCart().getUser().getId() == user.getId()) {
+//				
+//			}
+//		}
 		model.addAttribute("cartsize", user.getCartSize());
 		return "productPage";
 	}
@@ -87,7 +87,7 @@ public class Products {
 				cartsize++;
 			}
 		}
-		model.addAttribute("cartsize", cartsize);
+		model.addAttribute("cartsize", user.getCartSize());
 		return "userProductPage";
 	}
 	
@@ -113,15 +113,10 @@ public class Products {
 	public String deleteProduct(@PathVariable("id") Long id, Principal principal, Model model) {
 		Product product = userService.findProductById(id);
 		List<Comment> comment = userService.allComment();
-//		for(int i = 0; i < comment.size(); i++) {
-//			if(comment.get(i).getUser().getId() == id) {
-//				userService.deleteComment(comment.get(i).getId());
-//			}
-//		}
-//		System.out.println("this is from products: " + product);
-//		product.setWishlist(null);
-//		product.setCart(null);
-//		product.setComments(null);
+
+		product.setWishlist(null);
+		product.setCart(null);
+		product.setComments(null);
 //		product.setUser(null); 
 		userService.deleteProductById(id);
 		return "redirect:/api/products/myproducts";

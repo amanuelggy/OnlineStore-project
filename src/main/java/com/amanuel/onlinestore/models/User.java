@@ -153,7 +153,7 @@ public class User {
 //	}
 	public int getCartSize() {
 		int cart_size = 0;
-		for(int i = 0; i < carts.size(); i++) {
+		for(int i = 1; i < carts.size(); i++) {
 			if(id == carts.get(i).getUser().getId()) {
 				System.out.println("user id from user: " + id);
 				System.out.println("carts.get(i).getUser().getId() from user: " + id);

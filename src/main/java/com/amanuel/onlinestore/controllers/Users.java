@@ -94,7 +94,7 @@ public class Users {
 //		model.addAttribute("cartsize", cartsize);
 		model.addAttribute("cartsize", user.getCartSize());
 		//model.addAttribute("cartsize", cartsize);
-		//System.out.println("cart size: " + cartsize);
+		System.out.println("Home cart size: " + user.getCartSize());
 //		int num = 0;
 //		for(int i = 0; i < comment.size(); i++) {
 //			if(comment.get(i).getProduct().getId() == products.get(i).getId()) {
